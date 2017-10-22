@@ -19,6 +19,8 @@
 // License along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
 //
+// Target: Arduino Pro Mini, ATmega328P (3.3V, 8 MHz)
+//
 // Git repository home: <https://github.com/ghoss/RolleiLux>
 //===========================================================================================
 
@@ -78,7 +80,9 @@ const uint16_t ldrX[] = {
   0,      // #0
   420,    // #1
   900,    // #2
-  2500,   // #3
+  2010,   // #2.1
+  3328,   // #3
+  4400,   // #3.1
   6270,   // #4
   10380,  // #5
   14200,  // #6
@@ -93,7 +97,9 @@ const uint8_t ldrY[] = {
   0,      // #0
   10,     // #1
   50,     // #2
-  90,     // #3
+  55,     // #2.1
+  80,     // #3
+  90,     // #3.1
   95,     // #4
   105,    // #5
   115,    // #6
