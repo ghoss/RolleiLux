@@ -29,6 +29,9 @@
 // Debugging flag
 //#define DEBUG
 
+// Prescaler flag to reduce CPU clock speed and energy consumption
+#define SLOW_CLOCK
+
 
 //-------------------------------------------------------------------------------------------
 // Hardware / connector pin definitions
@@ -279,6 +282,25 @@ uint8_t mapEVToPWM(uint16_t ev10)
 
 
 //-------------------------------------------------------------------------------------------
+// initVariant
+//
+// Called automatically before setup(). Reduce CPU clock speed to conserve energy.
+//-------------------------------------------------------------------------------------------
+
+#ifdef SLOW_CLOCK
+
+void initVariant()
+{
+  noInterrupts();
+  CLKPR = _BV(CLKPCE);  // enable change of the clock prescaler
+  CLKPR = _BV(CLKPS0);  // divide frequency by 2 (= 8 MHz)
+  interrupts();
+}
+
+#endif
+
+
+//-------------------------------------------------------------------------------------------
 // setup
 //
 // This microcontroller setup function runs once when you press reset or power the board.
@@ -306,7 +328,11 @@ void setup()
 
   // Set needle to center position for 1.2 sec to verify battery level
   analogWrite(METER_OUTPUT, mapEVToPWM(100));
+  #ifdef SLOW_CLOCK
+  delay(500);
+  #else
   delay(1000);
+  #endif
 
   // Initialize all the readings in the smoothing buffer
   for (uint16_t i = 0; i < NUM_READINGS; i ++) readings[i] = 0;
